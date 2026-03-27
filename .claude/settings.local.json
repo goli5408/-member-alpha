@@ -1,0 +1,12 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(nvm --version)",
+      "Read(//Users/yunzhen/.nvm/versions/**)",
+      "Bash(/usr/local/bin/node -v)",
+      "Read(//usr/local/lib/node_modules/**)",
+      "Bash(npx create-next-app@latest . --typescript --tailwind --eslint --app --src-dir --import-alias \"@/*\" --no-git --yes)",
+      "Bash(npm run:*)"
+    ]
+  }
+}
