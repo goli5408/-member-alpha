@@ -50,23 +50,20 @@ const TAB_META = {
   journal: {
     placeholder: "What happened?",
     color:       "brand",
-    accent:      "bg-[--color-brand-100] border-[--color-brand-200]",
-    activeTab:   "bg-[--color-brand-600] text-white",
-    badge:       "bg-[--color-brand-100] text-[--color-brand-500]",
+    accentStyle: { background: "linear-gradient(145deg, #ede5fb 0%, #e2d8f8 100%)", border: "1px solid #d5ccf8" },
+    badge:       "bg-[--color-brand-100] text-[--color-brand-700]",
   },
   reflection: {
     placeholder: "What did I learn?",
     color:       "accent",
-    accent:      "bg-[--color-accent-100] border-[--color-accent-200]",
-    activeTab:   "bg-[--color-accent-500] text-white",
+    accentStyle: { background: "linear-gradient(145deg, #f0ede0 0%, #e8e4d4 80%, #ede5fb 100%)", border: "1px solid #d5ccf8" },
     badge:       "bg-[--color-accent-100] text-[--color-accent-500]",
   },
   intention: {
     placeholder: "I will…",
     color:       "brand",
-    accent:      "bg-[--color-brand-50] border-[--color-brand-200]",
-    activeTab:   "bg-[--color-brand-600] text-white",
-    badge:       "bg-[--color-brand-50] text-[--color-brand-600]",
+    accentStyle: { background: "linear-gradient(145deg, #f5f2fe 0%, #ebe5fb 100%)", border: "1px solid #d5ccf8" },
+    badge:       "bg-[--color-brand-50] text-[--color-brand-700]",
   },
 } as const;
 
@@ -198,25 +195,40 @@ export default function PracticePage() {
   return (
     <div className="pb-6">
 
-      {/* ── Page header ────────────────────────────────── */}
-      <div className="px-4 pt-5 pb-4">
-        <h1 className="text-xl font-semibold text-[--color-foreground]">Guided Practice</h1>
-        <p className="text-sm text-[--color-muted] mt-0.5">Your inner work space</p>
-      </div>
+      {/* ── Hero header ────────────────────────────────── */}
+      <header
+        className="relative overflow-hidden px-5 pt-6 pb-8"
+        style={{ background: "var(--gradient-hero)" }}
+      >
+        <div
+          aria-hidden
+          className="pointer-events-none absolute -top-8 -right-8 w-40 h-40 rounded-full"
+          style={{ background: "radial-gradient(circle, rgba(167,153,237,0.25) 0%, transparent 70%)" }}
+        />
+        <div className="relative">
+          <p className="text-[11px] font-semibold uppercase tracking-widest mb-1" style={{ color: "#8370d4" }}>
+            Soul Seated
+          </p>
+          <h1 className="font-display text-2xl font-bold leading-tight" style={{ color: "#414651" }}>
+            Guided Practice
+          </h1>
+          <p className="text-sm mt-1" style={{ color: "rgba(65,70,81,0.70)" }}>Your inner work space</p>
+        </div>
+      </header>
 
       {/* ── Tab switcher ───────────────────────────────── */}
-      <div className="px-4 mb-5">
+      <div className="px-4 mt-5 mb-5">
         <div className="flex gap-3">
           {TABS.map(({ key, label }) => (
             <button
               key={key}
               onClick={() => switchTab(key)}
-              className={[
-                "flex-1 rounded-2xl py-2.5 text-sm font-medium outline-none transition active:scale-[0.97]",
+              className="flex-1 rounded-2xl py-2.5 text-sm font-medium outline-none transition active:scale-[0.97]"
+              style={
                 activeTab === key
-                  ? "bg-[#caa4d4] text-white shadow-sm"
-                  : "bg-[#edf3ec] text-[#b889be]",
-              ].join(" ")}
+                  ? { background: "linear-gradient(160deg, #c4b8f5 0%, #8370d4 100%)", color: "#fff", boxShadow: "0 2px 10px rgba(131,112,212,0.28)" }
+                  : { background: "#ebe5fb", color: "#8370d4" }
+              }
             >
               {label}
             </button>
@@ -226,7 +238,7 @@ export default function PracticePage() {
 
       {/* ── Composer ───────────────────────────────────── */}
       <div className="px-4 space-y-3">
-        <div className={`rounded-3xl border p-5 space-y-4 ${meta.accent}`}>
+        <div className="rounded-3xl p-5 space-y-4" style={meta.accentStyle}>
 
           {/* Date */}
           <p className="text-xs font-medium text-[--color-muted]">

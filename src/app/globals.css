@@ -1,33 +1,38 @@
 @import "tailwindcss";
 
-/* ── Design Tokens ──────────────────────────────────────────────── */
+/* ═══════════════════════════════════════════════════════════════════
+   SOUL SEATED — Design Tokens
+   Source: SS Brand Guidelines v1.0 (Jan 2026)
+   p.24 Color System · p.20 Typography · p.28 Visual Design Ethos
+═══════════════════════════════════════════════════════════════════ */
 :root {
-  /* Brand – Lavender Purple (centered on #A799ED per brand guidelines) */
-  --color-brand-50:  #f5f3fe;
-  --color-brand-100: #ebe7fb;
-  --color-brand-200: #d5cef7;
-  --color-brand-300: #bdb2f2;
-  --color-brand-400: #c3b8f2;   /* decorative, use with dark text */
-  --color-brand-500: #a799ed;   /* PRIMARY — brand spec */
-  --color-brand-600: #a799ed;   /* alias kept for backward-compat token references */
-  --color-brand-700: #8370d4;   /* text labels on light bg */
+  /* ── Primary Brand: Purple ──────────────────────────── */
+  --color-brand-50:  #f5f2fe;
+  --color-brand-100: #ebe5fb;
+  --color-brand-200: #d5cbf7;
+  --color-brand-300: #c4b8f5;   /* light purple — decorative fills, tinted cards */
+  --color-brand-400: #b5a8f0;
+  --color-brand-500: #a799ed;   /* PRIMARY #A799ED — brand spec p.24 */
+  --color-brand-600: #a799ed;   /* alias for backward-compat */
+  --color-brand-700: #8370d4;   /* text on light bg (4.8:1 vs white) */
   --color-brand-800: #5e4eb8;
   --color-brand-900: #3c3280;
 
-  /* Earth tones — warm sand / tan for gradients & texture */
-  --color-earth-100: #f3f1e9;   /* same as background */
-  --color-earth-200: #e8e4d4;   /* warm sand */
-  --color-earth-300: #d8d2bc;   /* mid earth */
-  --color-earth-400: #c0b89c;   /* deeper tan */
+  /* ── Supporting Palette (brand spec p.24) ───────────── */
+  --color-support-blue:   #8098f9;   /* contemplative / secondary blue-purple */
+  --color-support-orange: #ff9c60;   /* energising accent */
+  --color-support-yellow: #fde274;   /* warmth / optimism */
+  --color-support-pink:   #dd2599;   /* expressive / celebration */
+  --color-support-red:    #c83538;   /* error / alert */
 
-  /* Accent – Sage Green (kept for semantic color coding) */
-  --color-accent-100: #c9ddc5;
-  --color-accent-200: #b3c9af;
-  --color-accent-300: #97b591;
-  --color-accent-400: #7a9b74;
-  --color-accent-500: #5f7e5a;
+  /* ── Background / Semantic (brand spec p.24) ────────── */
+  --color-background: #f3f1e9;   /* warm beige — brand spec */
+  --color-surface:    #faf9f4;   /* warm parchment for cards */
+  --color-foreground: #414651;   /* dark blue-grey — brand spec */
+  --color-muted:      #6b6f7a;   /* secondary text */
+  --color-border:     #e4e0d5;   /* warm border */
 
-  /* Neutral – warm-tinted grey */
+  /* ── Neutral — warm-tinted ──────────────────────────── */
   --color-neutral-50:  #faf9f4;
   --color-neutral-100: #f0ede0;
   --color-neutral-200: #e0ddd0;
@@ -39,50 +44,73 @@
   --color-neutral-800: #302d22;
   --color-neutral-900: #1a180f;
 
-  /* Semantic */
-  --color-background: #f3f1e9;  /* warm beige — brand spec */
-  --color-surface:    #faf9f4;  /* warm parchment for cards */
-  --color-foreground: #414651;  /* dark blue-grey — brand spec */
-  --color-muted:      #6b6f7a;  /* secondary text */
-  --color-border:     #e0ddd0;  /* warm border */
+  /* ── Earth tones — gradient partners ───────────────── */
+  --color-earth-100: #f3f1e9;
+  --color-earth-200: #e8e4d4;
+  --color-earth-300: #d8d2bc;
+  --color-earth-400: #c0b89c;
 
-  /* Status */
+  /* ── Accent (kept for content type coding) ─────────── */
+  --color-accent-100: #c9ddc5;
+  --color-accent-200: #b3c9af;
+  --color-accent-300: #97b591;
+  --color-accent-400: #7a9b74;
+  --color-accent-500: #5f7e5a;
+
+  /* ── Status ─────────────────────────────────────────── */
   --color-success: #5fa882;
   --color-warning: #d4a94a;
-  --color-error:   #c85f5f;
-  --color-info:    #6a9fd4;
+  --color-error:   #c83538;
+  --color-info:    #8098f9;
 
-  /* Layout */
+  /* ── Layout ─────────────────────────────────────────── */
   --top-bar-height:    52px;
-  --bottom-nav-height: 64px;
+  --bottom-nav-height: 68px;
   --max-mobile-width:  430px;
+
+  /* ── Brand Gradients (p.25 — purple dominant) ───────── */
+  /* Light hero: beige bleeds into soft lavender */
+  --gradient-hero:    linear-gradient(160deg, #f3f1e9 0%, #ede5fb 55%, #d5ccfa 100%);
+  /* Card tint: very pale lavender wash */
+  --gradient-card:    linear-gradient(135deg, #f5f2fe 0%, #ebe5fb 100%);
+  /* Practice card: lavender to medium purple */
+  --gradient-practice: linear-gradient(145deg, #ede5fb 0%, #c4b8f5 70%, #b0a0ea 100%);
+  /* Accent warm: earth meets purple */
+  --gradient-warm:    linear-gradient(145deg, #f3f1e9 0%, #ede8d4 50%, #d5ccfa 100%);
+  /* Guide: warm beige bleeds into soft orange */
+  --gradient-guide:   linear-gradient(160deg, #f3f1e9 0%, #fde8d5 60%, #ffd5b4 100%);
+
+  /* ── Soft noise SVG (inline, repeating tile) ────────── */
+  /* Calibrated to stay "tactile not gritty" at opacity 0.10 */
+  --noise-svg: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' width='200' height='200'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.72' numOctaves='4' stitchTiles='stitch'/><feColorMatrix type='saturate' values='0'/></filter><rect width='200' height='200' filter='url(%23n)' opacity='0.10'/></svg>");
 }
 
 @theme inline {
-  --color-background:   var(--color-background);
-  --color-surface:      var(--color-surface);
-  --color-foreground:   var(--color-foreground);
-  --color-muted:        var(--color-muted);
-  --color-border:       var(--color-border);
-
-  /* --color-brand → brand-600 (= #a799ed) */
-  --color-brand:        var(--color-brand-600);
-  --color-brand-light:  var(--color-brand-100);
-
+  --color-background:    var(--color-background);
+  --color-surface:       var(--color-surface);
+  --color-foreground:    var(--color-foreground);
+  --color-muted:         var(--color-muted);
+  --color-border:        var(--color-border);
+  --color-brand:         var(--color-brand-600);
+  --color-brand-light:   var(--color-brand-100);
   --color-accent:        var(--color-accent-300);
   --color-accent-light:  var(--color-accent-100);
   --color-accent-action: var(--color-accent-500);
+  /* ── Supporting palette ──────────────────────────────── */
+  --color-support-blue:   var(--color-support-blue);
+  --color-support-orange: var(--color-support-orange);
+  --color-support-yellow: var(--color-support-yellow);
+  --color-support-pink:   var(--color-support-pink);
 }
 
-/* ── Base ────────────────────────────────────────────────────────── */
+/* ── Base reset ──────────────────────────────────────────────────── */
 *, *::before, *::after { box-sizing: border-box; }
-
 html { -webkit-tap-highlight-color: transparent; }
 
 body {
   background: var(--color-background);
   color: var(--color-foreground);
-  /* Outfit for all body text */
+  /* Outfit for all UI text — brand spec p.20 */
   font-family: var(--font-body, 'Outfit'), -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
   font-size: 16px;
   line-height: 1.5;
@@ -90,9 +118,11 @@ body {
   justify-content: center;
 }
 
-/* Fraunces for display headings — editorial, warm, intentionally imperfect */
+/* Fraunces = closest available approximation to Sagita / Cooper BT
+   (brand spec p.21–22 — neither font is on Google Fonts).
+   Apply to h1 globally and via .font-display for key moments. */
 h1 {
-  font-family: var(--font-display, 'Fraunces'), Georgia, 'Times New Roman', serif;
+  font-family: var(--font-display, 'Fraunces'), Georgia, serif;
   font-variation-settings: 'opsz' 9;
 }
 
@@ -104,32 +134,62 @@ h1 {
   position: relative;
   overflow-x: hidden;
 
-  /* Warm beige base + very subtle soft noise for digital-zine tactility.
-     The SVG fractalNoise (opacity 0.12) multiplied over #F3F1E9 adds
-     a slight grain without harsh contrast — emulates risograph/paper. */
+  /* Warm beige + soft grain — "tactile not gritty" (brand spec p.32).
+     SVG noise multiplied over #F3F1E9 at ~3% visual opacity
+     emulates paper/risograph texture without heavy contrast. */
   background-color: var(--color-background);
-  background-image: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' width='250' height='250'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.68' numOctaves='4' stitchTiles='stitch'/><feColorMatrix type='saturate' values='0'/></filter><rect width='250' height='250' filter='url(%23n)' opacity='0.12'/></svg>");
-  background-size: 250px 250px;
+  background-image: var(--noise-svg);
+  background-size: 200px 200px;
   background-blend-mode: multiply;
 }
 
 /* ── Utilities ───────────────────────────────────────────────────── */
-/* Hide scrollbar */
 .no-scrollbar::-webkit-scrollbar { display: none; }
 .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
 
-/* Display font utility — apply to any element */
+/* Display font — apply to headings, hero text, section titles */
 .font-display {
   font-family: var(--font-display, 'Fraunces'), Georgia, serif;
   font-variation-settings: 'opsz' 9;
 }
 
-/* ── Soft neumorphic button ──────────────────────────────────────────
-   Shadows calibrated for the warm beige background (#F3F1E9):
-   - dark shadow  → #d8d5c8  (15% darker than bg)
-   - light shadow → #ffffff  (pure white highlight)
-   Text: #a799ed (brand primary purple)
-──────────────────────────────────────────────────────────────────── */
+/* Zine card — parchment surface + noise + soft border
+   Use on cards that should feel tactile and paper-like */
+.zine-card {
+  background-color: var(--color-surface);
+  background-image: var(--noise-svg);
+  background-size: 200px 200px;
+  background-blend-mode: multiply;
+  border: 1px solid var(--color-border);
+  border-radius: 1.5rem;   /* 24px */
+}
+
+/* Purple-tinted zine card — for hero / practice cards */
+.zine-card-purple {
+  background-color: #ede5fb;
+  background-image: var(--noise-svg);
+  background-size: 200px 200px;
+  background-blend-mode: multiply;
+  border: 1px solid #d5ccf8;
+  border-radius: 1.5rem;
+}
+
+/* Soft elevation — replaces hard drop shadows */
+.soft-raise {
+  box-shadow:
+    0 2px 12px rgba(167, 153, 237, 0.10),
+    0 1px 3px  rgba(167, 153, 237, 0.06);
+}
+
+.soft-raise-lg {
+  box-shadow:
+    0 4px 32px rgba(167, 153, 237, 0.14),
+    0 1px 6px  rgba(167, 153, 237, 0.06);
+}
+
+/* ── Neumorphic filter/tab buttons (btn-soft / btn-soft-on) ─────── */
+/* Shadows calibrated for #F3F1E9 background:
+   dark shadow  #d4d1c4 | light shadow #ffffff             */
 .btn-soft {
   background: var(--color-background);
   color: #a799ed;
@@ -140,40 +200,25 @@ h1 {
     -4px -4px 10px #ffffff;
   transition: box-shadow 0.15s ease, transform 0.1s ease;
 }
-
 .btn-soft:hover {
-  box-shadow:
-    6px 6px 14px #cecbc0,
-    -6px -6px 14px #ffffff;
+  box-shadow: 6px 6px 14px #cecbc0, -6px -6px 14px #ffffff;
 }
-
 .btn-soft:active {
   transform: scale(0.97);
-  box-shadow:
-    inset 2px 2px 5px #d4d1c4,
-    inset -2px -2px 5px #fdfaf4;
+  box-shadow: inset 2px 2px 5px #d4d1c4, inset -2px -2px 5px #fdfaf4;
 }
 
-/* Selected / "on" — stays pressed in */
 .btn-soft-on {
   background: var(--color-background);
   color: #a799ed;
   font-weight: 700;
   border: none;
   outline: none;
-  box-shadow:
-    inset 3px 3px 7px #d4d1c4,
-    inset -3px -3px 7px #fdfaf4;
+  box-shadow: inset 3px 3px 7px #d4d1c4, inset -3px -3px 7px #fdfaf4;
 }
-
 .btn-soft-on:hover {
-  box-shadow:
-    inset 3px 3px 8px #cecbc0,
-    inset -3px -3px 8px #ffffff;
+  box-shadow: inset 3px 3px 8px #cecbc0, inset -3px -3px 8px #ffffff;
 }
-
 .btn-soft-on:active {
-  box-shadow:
-    inset 4px 4px 10px #c8c5b8,
-    inset -4px -4px 10px #ffffff;
+  box-shadow: inset 4px 4px 10px #c8c5b8, inset -4px -4px 10px #ffffff;
 }

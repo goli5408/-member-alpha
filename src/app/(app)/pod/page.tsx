@@ -16,7 +16,8 @@ interface PodMember {
   name: string;
   pronouns: string;
   initials: string;
-  bgClass: string;
+  avatarBg: string;
+  avatarText: string;
   vibe: string;
   role: "ambassador" | "member";
   online: boolean;
@@ -40,13 +41,13 @@ interface ChatMessage {
 
 // ── Mock data ────────────────────────────────────────────────────
 const MEMBERS: PodMember[] = [
-  { id: "maya",   name: "Maya",   pronouns: "she/her",   initials: "MA", bgClass: "bg-rose-200",   vibe: "✨", role: "ambassador", online: true  },
-  { id: "alex",   name: "Alex",   pronouns: "they/them", initials: "AL", bgClass: "bg-sky-200",    vibe: "🔥", role: "member",      online: true  },
-  { id: "priya",  name: "Priya",  pronouns: "she/her",   initials: "PR", bgClass: "bg-amber-200",  vibe: "🌸", role: "member",      online: false },
-  { id: "devin",  name: "Devin",  pronouns: "he/him",    initials: "DE", bgClass: "bg-teal-200",   vibe: "🌊", role: "member",      online: true  },
-  { id: "sam",    name: "Sam",    pronouns: "they/them", initials: "SA", bgClass: "bg-lime-200",   vibe: "🎵", role: "member",      online: false },
-  { id: "river",  name: "River",  pronouns: "she/they",  initials: "RI", bgClass: "bg-orange-200", vibe: "🦋", role: "member",      online: true  },
-  { id: "jordan", name: "Jordan", pronouns: "they/them", initials: "JO", bgClass: "bg-violet-200", vibe: "🌱", role: "member",      online: true, isMe: true },
+  { id: "maya",   name: "Maya",   pronouns: "she/her",   initials: "MA", avatarBg: "#ffd5b4", avatarText: "#8a4010", vibe: "✨", role: "ambassador", online: true  },
+  { id: "alex",   name: "Alex",   pronouns: "they/them", initials: "AL", avatarBg: "#d0d8fc", avatarText: "#3040a0", vibe: "🔥", role: "member",      online: true  },
+  { id: "priya",  name: "Priya",  pronouns: "she/her",   initials: "PR", avatarBg: "#fef0a0", avatarText: "#7a5800", vibe: "🌸", role: "member",      online: false },
+  { id: "devin",  name: "Devin",  pronouns: "he/him",    initials: "DE", avatarBg: "#c9ddc5", avatarText: "#2e5c28", vibe: "🌊", role: "member",      online: true  },
+  { id: "sam",    name: "Sam",    pronouns: "they/them", initials: "SA", avatarBg: "#d5e8d3", avatarText: "#3a6035", vibe: "🎵", role: "member",      online: false },
+  { id: "river",  name: "River",  pronouns: "she/they",  initials: "RI", avatarBg: "#fde0c5", avatarText: "#9a4510", vibe: "🦋", role: "member",      online: true  },
+  { id: "jordan", name: "Jordan", pronouns: "they/them", initials: "JO", avatarBg: "#ebe5fb", avatarText: "#5e4eb8", vibe: "🌱", role: "member",      online: true, isMe: true },
 ];
 
 const QUICK_REACTS = ["❤️", "😂", "😮", "👍", "💜", "🙌"];
@@ -117,21 +118,27 @@ function Avatar({
   showOnline?: boolean;
 }) {
   const dims =
-    size === "sm" ? "w-8 h-8 text-xs rounded-full"
-    : size === "lg" ? "w-14 h-14 text-base rounded-2xl"
+    size === "sm" ? "w-8 h-8 text-[11px] rounded-xl"
+    : size === "lg" ? "w-14 h-14 text-sm rounded-2xl"
     : "w-10 h-10 text-xs rounded-xl";
   const vSize = size === "sm" ? "text-sm -bottom-1 -right-1" : "text-base -bottom-1 -right-1";
 
   return (
     <div className="relative shrink-0">
-      <div className={`${dims} ${member.bgClass} flex items-center justify-center font-bold text-[--color-foreground]`}>
+      <div
+        className={`${dims} flex items-center justify-center font-bold`}
+        style={{ background: member.avatarBg, color: member.avatarText }}
+      >
         {member.initials}
       </div>
       {showVibe && (
         <span className={`absolute ${vSize} leading-none`}>{member.vibe}</span>
       )}
       {showOnline && member.online && (
-        <span className="absolute -top-0.5 -right-0.5 w-3 h-3 rounded-full bg-green-400 border-2 border-white" />
+        <span
+          className="absolute -top-0.5 -right-0.5 w-3 h-3 rounded-full"
+          style={{ background: "#5fa882", border: "2px solid var(--color-background)" }}
+        />
       )}
     </div>
   );
@@ -208,15 +215,20 @@ export default function PodPage() {
     >
 
       {/* ── Tab bar ─────────────────────────────────────────── */}
-      <div className="shrink-0 flex gap-3 px-4 py-3 bg-[--color-background] border-b border-[--color-border]">
+      <div
+        className="shrink-0 flex gap-3 px-4 py-3"
+        style={{ background: "var(--color-background)", borderBottom: "1px solid var(--color-border)" }}
+      >
         {(["members", "chat"] as const).map((t) => (
           <button
             key={t}
             onClick={() => setTab(t)}
-            className={[
-              "flex-1 rounded-2xl py-2.5 text-sm transition",
-              tab === t ? "btn-soft-on" : "btn-soft",
-            ].join(" ")}
+            className="flex-1 rounded-2xl py-2.5 text-sm font-medium outline-none transition active:scale-[0.97]"
+            style={
+              tab === t
+                ? { background: "linear-gradient(160deg, #c4b8f5 0%, #8370d4 100%)", color: "#fff", boxShadow: "0 2px 10px rgba(131,112,212,0.28)" }
+                : { background: "#ebe5fb", color: "#8370d4" }
+            }
           >
             {t === "chat" ? "Pod Chat" : "Members"}
           </button>
@@ -231,7 +243,7 @@ export default function PodPage() {
           <div className="mx-4 mt-4">
             <div
               className="rounded-3xl overflow-hidden"
-              style={{ background: "linear-gradient(135deg, #9e6ea8 0%, #7d5587 100%)" }}
+              style={{ background: "linear-gradient(135deg, #a799ed 0%, #8370d4 100%)" }}
             >
               <div className="p-5">
                 <p className="text-[11px] font-semibold uppercase tracking-widest text-white/60 mb-1">
@@ -272,7 +284,8 @@ export default function PodPage() {
                   {MEMBERS.slice(0, 5).map((m) => (
                     <div
                       key={m.id}
-                      className={`w-8 h-8 rounded-full border-2 border-[#7d5587] ${m.bgClass} flex items-center justify-center text-[11px] font-bold text-[--color-foreground]`}
+                      className="w-8 h-8 rounded-full flex items-center justify-center text-[11px] font-bold"
+                      style={{ background: m.avatarBg, color: m.avatarText, border: "2px solid #8370d4" }}
                     >
                       {m.initials[0]}
                     </div>
@@ -290,21 +303,31 @@ export default function PodPage() {
             <p className="text-xs font-semibold uppercase tracking-widest text-[--color-muted] mb-3">
               Peer Ambassador
             </p>
-            <div className="rounded-2xl border border-[--color-brand-300] bg-[--color-brand-50] p-4 flex items-center gap-4">
+            <div
+              className="rounded-3xl p-4 flex items-center gap-4 soft-raise"
+              style={{
+                background: "linear-gradient(145deg, #fff8f0 0%, #fde8d5 100%)",
+                border: "1px solid #ffd5b4",
+              }}
+            >
               <div className="relative">
                 <Avatar member={ambassador} size="lg" showVibe showOnline />
-                <span className="absolute -top-1.5 -right-1.5 w-5 h-5 rounded-full bg-[--color-brand-600] border-2 border-white flex items-center justify-center">
-                  <Crown size={9} className="text-white" />
+                <span
+                  className="absolute -top-1.5 -right-1.5 w-5 h-5 rounded-full flex items-center justify-center"
+                  style={{ background: "#ff9c60", border: "2px solid var(--color-background)" }}
+                >
+                  <Crown size={9} color="#fff" />
                 </span>
               </div>
               <div className="flex-1 min-w-0">
-                <p className="font-semibold text-[--color-foreground]">{ambassador.name}</p>
-                <p className="text-xs text-[--color-muted]">{ambassador.pronouns}</p>
-                <p className="text-xs text-[--color-brand-600] font-medium mt-0.5">Peer Ambassador</p>
+                <p className="font-semibold" style={{ color: "var(--color-foreground)" }}>{ambassador.name}</p>
+                <p className="text-xs mt-0.5" style={{ color: "var(--color-muted)" }}>{ambassador.pronouns}</p>
+                <p className="text-xs font-semibold mt-0.5" style={{ color: "#c06020" }}>Peer Ambassador</p>
               </div>
               <button
                 onClick={() => setTab("chat")}
-                className="shrink-0 rounded-xl border border-[--color-brand-300] bg-white px-3 py-1.5 text-xs font-semibold text-[--color-brand-600] transition active:scale-95"
+                className="shrink-0 rounded-2xl px-3.5 py-2 text-xs font-bold transition active:scale-95"
+                style={{ background: "linear-gradient(145deg, #ffd5b4 0%, #ff9c60 100%)", color: "#5c2d00" }}
               >
                 Message
               </button>
@@ -320,22 +343,25 @@ export default function PodPage() {
               {podMembers.map((member) => (
                 <div
                   key={member.id}
-                  className="flex flex-col items-center gap-2 rounded-2xl border border-[--color-border] bg-[--color-surface] p-3"
+                  className="flex flex-col items-center gap-2.5 rounded-3xl p-3.5 zine-card soft-raise"
                 >
                   <Avatar member={member} size="lg" showVibe showOnline />
                   <div className="text-center">
-                    <p className="text-xs font-semibold text-[--color-foreground]">{member.name}</p>
-                    <p className="text-[10px] text-[--color-muted]">{member.pronouns}</p>
+                    <p className="text-xs font-semibold" style={{ color: "var(--color-foreground)" }}>{member.name}</p>
+                    <p className="text-[10px] mt-0.5" style={{ color: "var(--color-muted)" }}>{member.pronouns}</p>
                   </div>
                 </div>
               ))}
 
               {/* Me card */}
-              <div className="flex flex-col items-center gap-2 rounded-2xl border-2 border-[--color-brand-300] bg-[--color-brand-50] p-3">
+              <div
+                className="flex flex-col items-center gap-2.5 rounded-3xl p-3.5 soft-raise"
+                style={{ background: "linear-gradient(145deg, #ede5fb 0%, #d5ccf8 100%)", border: "1px solid #c4b8f5" }}
+              >
                 <Avatar member={ME} size="lg" showVibe showOnline />
                 <div className="text-center">
-                  <p className="text-xs font-semibold text-[--color-brand-600]">You</p>
-                  <p className="text-[10px] text-[--color-muted]">{ME.pronouns}</p>
+                  <p className="text-xs font-bold" style={{ color: "#5e4eb8" }}>You</p>
+                  <p className="text-[10px] mt-0.5" style={{ color: "var(--color-muted)" }}>{ME.pronouns}</p>
                 </div>
               </div>
             </div>
@@ -376,7 +402,8 @@ export default function PodPage() {
                     {/* Avatar column */}
                     <div className="w-8 shrink-0 self-end mb-1">
                       {!isMe && !sameSender ? (
-                        <div className={`w-8 h-8 rounded-full ${sender.bgClass} flex items-center justify-center text-[10px] font-bold text-[--color-foreground] relative`}>
+                        <div className="w-8 h-8 rounded-xl flex items-center justify-center text-[10px] font-bold relative"
+                          style={{ background: sender.avatarBg, color: sender.avatarText }}>
                           {sender.initials}
                           <span className="absolute -bottom-0.5 -right-0.5 text-xs leading-none">{sender.vibe}</span>
                         </div>
@@ -397,11 +424,14 @@ export default function PodPage() {
                       <button
                         className={[
                           "text-left rounded-2xl px-3.5 py-2.5 transition active:opacity-80",
-                          isMe
-                            ? "bg-[--color-brand-600] text-white rounded-br-sm"
-                            : "bg-[--color-surface] text-[--color-foreground] border border-[--color-border] rounded-bl-sm",
-                          isActive ? "ring-2 ring-[--color-brand-400]/40" : "",
+                          isMe ? "rounded-br-sm" : "rounded-bl-sm",
+                          isActive ? "ring-2 ring-[#a799ed]/30" : "",
                         ].join(" ")}
+                        style={
+                          isMe
+                            ? { background: "linear-gradient(145deg, #8370d4 0%, #5e4eb8 100%)", color: "#fff", boxShadow: "0 2px 10px rgba(94,78,184,0.25)" }
+                            : { background: "rgba(255,255,255,0.72)", color: "var(--color-foreground)", border: "1px solid rgba(167,153,237,0.15)", boxShadow: "0 1px 6px rgba(131,112,212,0.08)" }
+                        }
                         onClick={(e) => {
                           e.stopPropagation();
                           setActiveId(isActive ? null : msg.id);
@@ -409,18 +439,25 @@ export default function PodPage() {
                       >
                         {/* Reply preview inside bubble */}
                         {replyTo && (
-                          <div className={`mb-2 rounded-xl px-2.5 py-1.5 border-l-2 ${isMe ? "bg-white/15 border-white/40" : "bg-[--color-background] border-[--color-brand-400]"}`}>
-                            <p className={`text-[10px] font-semibold mb-0.5 ${isMe ? "text-white/75" : "text-[--color-brand-600]"}`}>
+                          <div
+                            className="mb-2 rounded-xl px-2.5 py-1.5 border-l-2"
+                            style={
+                              isMe
+                                ? { background: "rgba(255,255,255,0.15)", borderColor: "rgba(255,255,255,0.40)" }
+                                : { background: "rgba(243,241,233,0.80)", borderColor: "#a799ed" }
+                            }
+                          >
+                            <p className="text-[10px] font-semibold mb-0.5" style={{ color: isMe ? "rgba(255,255,255,0.80)" : "#8370d4" }}>
                               {getMember(replyTo.senderId).name}
                             </p>
-                            <p className={`text-[11px] truncate ${isMe ? "text-white/60" : "text-[--color-muted]"}`}>
+                            <p className="text-[11px] truncate" style={{ color: isMe ? "rgba(255,255,255,0.65)" : "var(--color-muted)" }}>
                               {replyTo.text}
                             </p>
                           </div>
                         )}
 
                         <p className="text-sm leading-relaxed">{msg.text}</p>
-                        <p className={`text-[10px] mt-1 text-right ${isMe ? "text-white/50" : "text-[--color-muted]"}`}>
+                        <p className="text-[10px] mt-1 text-right" style={{ color: isMe ? "rgba(255,255,255,0.55)" : "var(--color-muted)" }}>
                           {msg.time}
                         </p>
                       </button>
@@ -428,7 +465,8 @@ export default function PodPage() {
                       {/* Inline action bar (appears when active) */}
                       {isActive && (
                         <div
-                          className="mt-1.5 flex items-center gap-0.5 rounded-full border border-[--color-border] bg-[--color-surface] shadow-md px-1.5 py-1"
+                          className="mt-1.5 flex items-center gap-0.5 rounded-full px-1.5 py-1"
+                          style={{ background: "var(--color-surface)", border: "1px solid rgba(167,153,237,0.20)", boxShadow: "0 4px 16px rgba(131,112,212,0.14)" }}
                           onClick={(e) => e.stopPropagation()}
                         >
                           {QUICK_REACTS.map((emoji) => (
@@ -507,7 +545,8 @@ export default function PodPage() {
 
           {/* Input bar ─────────────────────────────────────── */}
           <div className="shrink-0 flex items-center gap-2 px-3 py-3 border-t border-[--color-border] bg-[--color-surface]">
-            <div className={`w-8 h-8 rounded-full ${ME.bgClass} flex items-center justify-center text-[10px] font-bold text-[--color-foreground] shrink-0`}>
+            <div className="w-8 h-8 rounded-xl flex items-center justify-center text-[10px] font-bold shrink-0"
+              style={{ background: ME.avatarBg, color: ME.avatarText }}>
               {ME.initials}
             </div>
             <input

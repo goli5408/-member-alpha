@@ -91,7 +91,7 @@ function ContentCard({ item }: { item: ContentItem }) {
   return (
     <Link
       href={`/library/${item.id}`}
-      className="flex items-center gap-3 rounded-2xl bg-[--color-surface] border border-[--color-border] p-4 hover:border-[--color-brand-300] transition group"
+      className="flex items-center gap-3 rounded-3xl p-4 transition active:scale-[0.99] zine-card soft-raise"
     >
       {/* Type icon */}
       <div className={`w-10 h-10 rounded-xl ${colors.bg} flex items-center justify-center shrink-0`}>
@@ -190,32 +190,60 @@ export default function LibraryPage() {
   return (
     <div className="pb-4">
 
-      {/* ── Header ─────────────────────────────────────────── */}
-      <header className="px-4 pt-8 pb-4">
-        <h1 className="text-xl font-semibold text-[--color-foreground]">Library</h1>
-        <p className="text-sm text-[--color-muted] mt-0.5">
-          {unreadCount} unread · {CONTENT_ITEMS.length} total
-        </p>
+      {/* ── Hero header ────────────────────────────────────── */}
+      <header
+        className="relative overflow-hidden px-5 pt-6 pb-8"
+        style={{ background: "var(--gradient-hero)" }}
+      >
+        {/* Decorative blobs */}
+        <div
+          aria-hidden
+          className="pointer-events-none absolute -top-8 -right-8 w-40 h-40 rounded-full"
+          style={{ background: "radial-gradient(circle, rgba(167,153,237,0.25) 0%, transparent 70%)" }}
+        />
+        <div
+          aria-hidden
+          className="pointer-events-none absolute bottom-0 left-1/4 w-28 h-28 rounded-full"
+          style={{ background: "radial-gradient(circle, rgba(128,152,249,0.12) 0%, transparent 70%)" }}
+        />
+
+        <div className="relative">
+          <p className="text-[11px] font-semibold uppercase tracking-widest mb-1" style={{ color: "#8370d4" }}>
+            Soul Seated
+          </p>
+          <h1 className="font-display text-2xl font-bold leading-tight" style={{ color: "#414651" }}>
+            Library
+          </h1>
+          <p className="text-sm mt-1" style={{ color: "rgba(65,70,81,0.70)" }}>
+            {unreadCount} unread · {CONTENT_ITEMS.length} total
+          </p>
+        </div>
       </header>
 
       {/* ── Search bar ─────────────────────────────────────── */}
-      <div className="px-4 mb-4">
-        <div className="relative">
+      <div className="px-4 mt-4 mb-4">
+        <div
+          className="relative rounded-2xl overflow-hidden"
+          style={{ background: "var(--color-surface)", border: "1px solid var(--color-border)" }}
+        >
           <Search
             size={16}
-            className="absolute left-3.5 top-1/2 -translate-y-1/2 text-[--color-muted] pointer-events-none"
+            className="absolute left-3.5 top-1/2 -translate-y-1/2 pointer-events-none"
+            style={{ color: "var(--color-muted)" }}
           />
           <input
             type="search"
             value={query}
             onChange={(e) => setQuery(e.target.value)}
             placeholder="Search by title, tag, or keyword…"
-            className="w-full rounded-xl border border-[--color-border] bg-[--color-surface] pl-9 pr-4 py-2.5 text-sm outline-none focus:border-[--color-brand-600] focus:ring-2 focus:ring-[--color-brand-600]/20 transition"
+            className="w-full bg-transparent pl-9 pr-4 py-2.5 text-sm outline-none transition"
+            style={{ color: "var(--color-foreground)" }}
           />
           {query && (
             <button
               onClick={() => setQuery("")}
-              className="absolute right-3 top-1/2 -translate-y-1/2 text-[--color-muted] hover:text-[--color-foreground]"
+              className="absolute right-3 top-1/2 -translate-y-1/2"
+              style={{ color: "var(--color-muted)" }}
             >
               <X size={15} />
             </button>

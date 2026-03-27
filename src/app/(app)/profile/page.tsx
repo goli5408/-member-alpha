@@ -28,17 +28,11 @@ const VIBE_OPTIONS = [
 ] as const;
 
 const PRONOUNS_OPTIONS = [
-  "he/him",
-  "she/her",
-  "they/them",
-  "he/they",
-  "she/they",
-  "ze/zir",
-  "prefer not to say",
-  "custom",
+  "he/him", "she/her", "they/them",
+  "he/they", "she/they", "ze/zir",
+  "prefer not to say", "custom",
 ];
 
-// ── Mock initial profile ─────────────────────────────────────────
 const MOCK_PROFILE = {
   displayName: "Jordan",
   email: "jordan@example.com",
@@ -48,19 +42,16 @@ const MOCK_PROFILE = {
   vibe: { emoji: "🌱", label: "Growing" } as { emoji: string; label: string } | null,
 };
 
-// ── Vibe Picker (bottom sheet) ───────────────────────────────────
+// ── Vibe Picker ──────────────────────────────────────────────────
 function VibePicker({
-  current,
-  onConfirm,
-  onClear,
-  onClose,
+  current, onConfirm, onClear, onClose,
 }: {
   current: { emoji: string; label: string } | null;
   onConfirm: (v: { emoji: string; label: string }) => void;
   onClear: () => void;
   onClose: () => void;
 }) {
-  const [selected, setSelected] = useState<string>(current?.emoji ?? "");
+  const [selected, setSelected] = useState(current?.emoji ?? "");
   const [label, setLabel]       = useState(current?.label ?? "");
 
   function handleConfirm() {
@@ -71,30 +62,38 @@ function VibePicker({
 
   return (
     <>
-      {/* Backdrop */}
       <div
-        className="fixed inset-0 z-40 bg-black/40 backdrop-blur-sm"
+        className="fixed inset-0 z-40"
+        style={{ background: "rgba(55,40,90,0.35)", backdropFilter: "blur(4px)" }}
         onClick={onClose}
       />
-
-      {/* Sheet */}
-      <div className="fixed bottom-0 left-1/2 -translate-x-1/2 w-full max-w-[430px] z-50 bg-[--color-surface] rounded-t-3xl px-5 pt-5 pb-10 space-y-5 shadow-xl">
+      <div
+        className="fixed bottom-0 left-1/2 -translate-x-1/2 w-full max-w-[430px] z-50 rounded-t-[28px] px-5 pt-4 pb-10 space-y-5"
+        style={{
+          backgroundColor: "var(--color-background)",
+          backgroundImage: "var(--noise-svg)",
+          backgroundSize: "200px 200px",
+          backgroundBlendMode: "multiply",
+          boxShadow: "0 -4px 40px rgba(131,112,212,0.18), 0 -1px 0 rgba(167,153,237,0.25)",
+        }}
+      >
         {/* Handle */}
-        <div className="mx-auto w-10 h-1 rounded-full bg-[--color-border]" />
+        <div className="mx-auto w-10 h-1 rounded-full" style={{ background: "rgba(167,153,237,0.40)" }} />
 
         {/* Header */}
         <div className="flex items-center justify-between">
           <div>
-            <h3 className="font-semibold text-[--color-foreground]">Current Vibe</h3>
-            <p className="text-xs text-[--color-muted] mt-0.5">
+            <h3 className="font-semibold" style={{ color: "var(--color-foreground)" }}>Current Vibe</h3>
+            <p className="text-xs mt-0.5" style={{ color: "var(--color-muted)" }}>
               Visible to your Pod · expires in 24 hours
             </p>
           </div>
           <button
             onClick={onClose}
-            className="w-8 h-8 rounded-full bg-[--color-neutral-100] flex items-center justify-center"
+            className="w-8 h-8 rounded-full flex items-center justify-center transition"
+            style={{ background: "rgba(167,153,237,0.12)", color: "#8370d4" }}
           >
-            <X size={15} className="text-[--color-muted]" />
+            <X size={15} />
           </button>
         </div>
 
@@ -103,28 +102,25 @@ function VibePicker({
           {VIBE_OPTIONS.map(({ emoji, label: defaultLabel }) => (
             <button
               key={emoji}
-              onClick={() => {
-                setSelected(emoji);
-                if (!label) setLabel(defaultLabel);
-              }}
-              className={[
-                "flex flex-col items-center gap-1 rounded-2xl py-2.5 transition",
+              onClick={() => { setSelected(emoji); if (!label) setLabel(defaultLabel); }}
+              className="flex flex-col items-center gap-1 rounded-2xl py-2.5 transition active:scale-95"
+              style={
                 selected === emoji
-                  ? "bg-[--color-brand-100] ring-2 ring-[--color-brand-600]"
-                  : "bg-[--color-neutral-50] hover:bg-[--color-brand-50]",
-              ].join(" ")}
+                  ? { background: "#ebe5fb", boxShadow: "0 0 0 2px #8370d4" }
+                  : { background: "rgba(255,255,255,0.50)" }
+              }
             >
               <span className="text-2xl leading-none">{emoji}</span>
-              <span className="text-[9px] font-medium text-[--color-muted] leading-tight text-center">
+              <span className="text-[9px] font-medium leading-tight text-center" style={{ color: "var(--color-muted)" }}>
                 {defaultLabel}
               </span>
             </button>
           ))}
         </div>
 
-        {/* Optional custom label */}
+        {/* Optional label */}
         <div className="space-y-1">
-          <label className="text-xs font-semibold uppercase tracking-widest text-[--color-muted]">
+          <label className="text-xs font-semibold uppercase tracking-widest" style={{ color: "var(--color-muted)" }}>
             Add a label <span className="normal-case font-normal">(optional)</span>
           </label>
           <div className="relative">
@@ -133,9 +129,10 @@ function VibePicker({
               value={label}
               onChange={(e) => setLabel(e.target.value.slice(0, 30))}
               placeholder='e.g. "Taking it one day at a time"'
-              className="w-full rounded-xl border border-[--color-border] bg-[--color-neutral-50] px-4 py-2.5 pr-12 text-sm outline-none focus:border-[--color-brand-600] focus:ring-2 focus:ring-[--color-brand-600]/20 transition"
+              className="w-full rounded-2xl px-4 py-2.5 pr-12 text-sm outline-none transition"
+              style={{ background: "rgba(255,255,255,0.60)", border: "1px solid var(--color-border)", color: "var(--color-foreground)" }}
             />
-            <span className="absolute right-3 top-1/2 -translate-y-1/2 text-[10px] text-[--color-muted]">
+            <span className="absolute right-3 top-1/2 -translate-y-1/2 text-[10px]" style={{ color: "var(--color-muted)" }}>
               {label.length}/30
             </span>
           </div>
@@ -145,14 +142,16 @@ function VibePicker({
         <div className="flex gap-3">
           <button
             onClick={() => { onClear(); onClose(); }}
-            className="flex-1 rounded-xl border border-[--color-border] py-3 text-sm font-semibold text-[--color-muted] hover:bg-[--color-neutral-50] transition"
+            className="flex-1 rounded-2xl py-3 text-sm font-semibold transition"
+            style={{ background: "var(--color-surface)", border: "1px solid var(--color-border)", color: "var(--color-muted)" }}
           >
             Clear vibe
           </button>
           <button
             onClick={handleConfirm}
             disabled={!selected}
-            className="flex-1 rounded-xl bg-[--color-brand-600] py-3 text-sm font-semibold text-white disabled:opacity-40 hover:opacity-90 transition"
+            className="flex-1 rounded-2xl py-3 text-sm font-bold transition active:scale-[0.98] disabled:opacity-40"
+            style={{ background: "linear-gradient(160deg, #c4b8f5 0%, #8370d4 100%)", color: "#fff" }}
           >
             Set vibe
           </button>
@@ -162,128 +161,150 @@ function VibePicker({
   );
 }
 
-// ── Field components ─────────────────────────────────────────────
+// ── FormField ────────────────────────────────────────────────────
 function FormField({
-  label,
-  required,
-  hint,
-  children,
+  label, required, hint, children,
 }: {
-  label: string;
-  required?: boolean;
-  hint?: string;
-  children: React.ReactNode;
+  label: string; required?: boolean; hint?: string; children: React.ReactNode;
 }) {
   return (
     <div className="space-y-1.5">
-      <label className="flex items-center gap-1.5 text-xs font-semibold uppercase tracking-widest text-[--color-muted]">
+      <label className="flex items-center gap-1.5 text-xs font-semibold uppercase tracking-widest" style={{ color: "var(--color-muted)" }}>
         {label}
-        {required && <span className="text-[--color-brand-600] normal-case font-bold">*</span>}
+        {required && <span style={{ color: "#8370d4" }}>*</span>}
       </label>
       {children}
-      {hint && <p className="text-[11px] text-[--color-muted]">{hint}</p>}
+      {hint && <p className="text-[11px]" style={{ color: "var(--color-muted)" }}>{hint}</p>}
     </div>
   );
 }
 
+// Input / textarea shared style
+const fieldStyle = {
+  background: "rgba(255,255,255,0.55)",
+  border: "1px solid var(--color-border)",
+  color: "var(--color-foreground)",
+} as const;
+
 // ── Page ─────────────────────────────────────────────────────────
 export default function ProfilePage() {
-  const [displayName, setDisplayName] = useState(MOCK_PROFILE.displayName);
-  const [bio, setBio]                 = useState(MOCK_PROFILE.bio);
-  const [pronouns, setPronouns]       = useState(MOCK_PROFILE.pronouns);
+  const [displayName, setDisplayName]   = useState(MOCK_PROFILE.displayName);
+  const [bio, setBio]                   = useState(MOCK_PROFILE.bio);
+  const [pronouns, setPronouns]         = useState(MOCK_PROFILE.pronouns);
   const [customPronouns, setCustomPronouns] = useState("");
-  const [hometown, setHometown]       = useState(MOCK_PROFILE.hometown);
-  const [vibe, setVibe]               = useState(MOCK_PROFILE.vibe);
-  const [vibeOpen, setVibeOpen]       = useState(false);
-  const [saved, setSaved]             = useState(false);
-
-  // Image previews (mock — no real upload)
+  const [hometown, setHometown]         = useState(MOCK_PROFILE.hometown);
+  const [vibe, setVibe]                 = useState(MOCK_PROFILE.vibe);
+  const [vibeOpen, setVibeOpen]         = useState(false);
+  const [saved, setSaved]               = useState(false);
   const [heroSrc, setHeroSrc]           = useState<string | null>(null);
   const [avatarSrc, setAvatarSrc]       = useState<string | null>(null);
   const heroInputRef                    = useRef<HTMLInputElement>(null);
   const avatarInputRef                  = useRef<HTMLInputElement>(null);
 
-  function handleImageChange(
-    e: React.ChangeEvent<HTMLInputElement>,
-    setter: (s: string) => void,
-  ) {
+  function handleImageChange(e: React.ChangeEvent<HTMLInputElement>, setter: (s: string) => void) {
     const file = e.target.files?.[0];
     if (!file) return;
-    const url = URL.createObjectURL(file);
-    setter(url);
+    setter(URL.createObjectURL(file));
   }
 
   function handleSave() {
+    localStorage.setItem("ss_displayName", displayName);
     setSaved(true);
     setTimeout(() => setSaved(false), 2000);
   }
-
-  const showCustomPronouns = pronouns === "custom";
 
   return (
     <>
       <div className="pb-10">
 
-        {/* ── Hero image ─────────────────────────────────── */}
+        {/* ── Hero / cover ──────────────────────────────────── */}
         <div
-          className="relative h-40 cursor-pointer group"
+          className="relative overflow-hidden cursor-pointer group"
           style={{
-            background: heroSrc
-              ? undefined
-              : "linear-gradient(135deg, #e0d3f1 0%, #caa4d4 60%, #b3c9af 100%)",
+            height: "180px",
+            background: heroSrc ? undefined : "var(--gradient-hero)",
           }}
           onClick={() => heroInputRef.current?.click()}
         >
-          {heroSrc && (
-            <img src={heroSrc} alt="Hero" className="w-full h-full object-cover" />
+          {/* Blobs (no cover photo) */}
+          {!heroSrc && (
+            <>
+              <div aria-hidden className="pointer-events-none absolute -top-10 -right-10 w-48 h-48 rounded-full"
+                style={{ background: "radial-gradient(circle, rgba(167,153,237,0.30) 0%, transparent 70%)" }} />
+              <div aria-hidden className="pointer-events-none absolute bottom-0 left-1/3 w-32 h-32 rounded-full"
+                style={{ background: "radial-gradient(circle, rgba(128,152,249,0.18) 0%, transparent 70%)" }} />
+            </>
           )}
-          {/* Edit overlay */}
-          <div className="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-100 transition flex items-center justify-center">
-            <div className="flex items-center gap-2 rounded-full bg-white/80 px-3 py-1.5 text-xs font-semibold text-[--color-foreground]">
-              <Camera size={13} /> Edit cover
+          {heroSrc && <img src={heroSrc} alt="Cover" className="w-full h-full object-cover" />}
+
+          {/* Edit cover hint */}
+          <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition"
+            style={{ background: "rgba(0,0,0,0.18)" }}>
+            <div className="flex items-center gap-1.5 rounded-full px-3 py-1.5 text-xs font-semibold"
+              style={{ background: "rgba(255,255,255,0.75)", backdropFilter: "blur(8px)", color: "#414651" }}>
+              <Camera size={12} /> Edit cover
             </div>
           </div>
-          <input
-            ref={heroInputRef}
-            type="file"
-            accept="image/*"
-            className="hidden"
-            onChange={(e) => handleImageChange(e, setHeroSrc)}
-          />
+          <input ref={heroInputRef} type="file" accept="image/*" className="hidden"
+            onChange={(e) => handleImageChange(e, setHeroSrc)} />
         </div>
 
-        {/* ── Avatar ─────────────────────────────────────── */}
-        <div className="px-4">
-          <div className="relative -mt-8 w-20 h-20 mb-4">
+        {/* ── Avatar + name ─────────────────────────────────── */}
+        <div className="px-5 -mt-10 flex items-end gap-4 mb-5">
+          {/* Avatar — rounded-2xl, soft purple glow ring, NO hard border */}
+          <div
+            className="relative shrink-0 cursor-pointer group"
+            onClick={() => avatarInputRef.current?.click()}
+          >
             <div
-              className="w-20 h-20 rounded-full border-4 border-[--color-background] overflow-hidden cursor-pointer bg-[--color-neutral-200] flex items-center justify-center group"
-              onClick={() => avatarInputRef.current?.click()}
+              className="w-20 h-20 rounded-2xl overflow-hidden flex items-center justify-center"
+              style={{
+                background: avatarSrc ? undefined : "linear-gradient(145deg, #ede5fb 0%, #c4b8f5 100%)",
+                boxShadow: "0 0 0 3px var(--color-background), 0 0 0 5px rgba(167,153,237,0.45), 0 4px 16px rgba(131,112,212,0.20)",
+              }}
             >
-              {avatarSrc ? (
-                <img src={avatarSrc} alt="Avatar" className="w-full h-full object-cover" />
-              ) : (
-                <span className="text-3xl select-none">🧑</span>
-              )}
-              {/* Edit overlay */}
-              <div className="absolute inset-0 rounded-full bg-black/30 opacity-0 group-hover:opacity-100 transition flex items-center justify-center">
-                <Camera size={18} className="text-white" />
-              </div>
+              {avatarSrc
+                ? <img src={avatarSrc} alt="Avatar" className="w-full h-full object-cover" />
+                : <span className="text-3xl select-none">{vibe?.emoji ?? "🌱"}</span>
+              }
             </div>
-            <input
-              ref={avatarInputRef}
-              type="file"
-              accept="image/*"
-              className="hidden"
-              onChange={(e) => handleImageChange(e, setAvatarSrc)}
-            />
+            {/* Camera overlay */}
+            <div className="absolute inset-0 rounded-2xl flex items-center justify-center opacity-0 group-hover:opacity-100 transition"
+              style={{ background: "rgba(0,0,0,0.30)" }}>
+              <Camera size={18} color="#fff" />
+            </div>
+            <input ref={avatarInputRef} type="file" accept="image/*" className="hidden"
+              onChange={(e) => handleImageChange(e, setAvatarSrc)} />
           </div>
 
-          {/* ── Form ─────────────────────────────────────── */}
-          <div className="space-y-5">
+          {/* Name + pronouns */}
+          <div className="pb-1 flex-1 min-w-0">
+            <p className="text-[11px] font-semibold uppercase tracking-widest mb-0.5" style={{ color: "#8370d4" }}>
+              Soul Seated
+            </p>
+            <h1 className="font-display text-xl font-bold leading-tight truncate" style={{ color: "#414651" }}>
+              {displayName || "Your Name"}
+            </h1>
+            <p className="text-xs mt-0.5" style={{ color: "rgba(65,70,81,0.60)" }}>{pronouns}</p>
+          </div>
+        </div>
 
-            {/* Email — read only */}
+        {/* ── Form ─────────────────────────────────────────── */}
+        <div className="px-4">
+          <div
+            className="rounded-3xl p-5 space-y-5"
+            style={{
+              backgroundColor: "var(--color-surface)",
+              backgroundImage: "var(--noise-svg)",
+              backgroundSize: "200px 200px",
+              backgroundBlendMode: "multiply",
+              border: "1px solid var(--color-border)",
+            }}
+          >
+
+            {/* Email */}
             <FormField label="Email" hint="Not visible to other members">
-              <div className="w-full rounded-xl border border-[--color-border] bg-[--color-neutral-50] px-4 py-3 text-sm text-[--color-muted]">
+              <div className="w-full rounded-2xl px-4 py-3 text-sm" style={{ background: "rgba(0,0,0,0.04)", color: "var(--color-muted)" }}>
                 {MOCK_PROFILE.email}
               </div>
             </FormField>
@@ -295,22 +316,20 @@ export default function ProfilePage() {
                 value={displayName}
                 onChange={(e) => setDisplayName(e.target.value)}
                 placeholder="How would you like to be called?"
-                className="w-full rounded-xl border border-[--color-border] bg-[--color-surface] px-4 py-3 text-sm outline-none focus:border-[--color-brand-600] focus:ring-2 focus:ring-[--color-brand-600]/20 transition"
+                className="w-full rounded-2xl px-4 py-3 text-sm outline-none transition"
+                style={fieldStyle}
               />
             </FormField>
 
-            {/* My Journey Bio */}
-            <FormField
-              label="My Journey Bio"
-              required
-              hint="Why did you join? What do you hope to discover?"
-            >
+            {/* Bio */}
+            <FormField label="My Journey Bio" required hint="Why did you join? What do you hope to discover?">
               <textarea
                 value={bio}
                 onChange={(e) => setBio(e.target.value)}
                 placeholder="Share a little about your journey…"
                 rows={4}
-                className="w-full rounded-xl border border-[--color-border] bg-[--color-surface] px-4 py-3 text-sm outline-none focus:border-[--color-brand-600] focus:ring-2 focus:ring-[--color-brand-600]/20 transition resize-none"
+                className="w-full rounded-2xl px-4 py-3 text-sm outline-none transition resize-none"
+                style={fieldStyle}
               />
             </FormField>
 
@@ -319,97 +338,81 @@ export default function ProfilePage() {
               <select
                 value={pronouns}
                 onChange={(e) => setPronouns(e.target.value)}
-                className="w-full rounded-xl border border-[--color-border] bg-[--color-surface] px-4 py-3 text-sm outline-none focus:border-[--color-brand-600] focus:ring-2 focus:ring-[--color-brand-600]/20 transition appearance-none"
+                className="w-full rounded-2xl px-4 py-3 text-sm outline-none transition appearance-none"
+                style={fieldStyle}
               >
                 <option value="">Prefer not to say</option>
                 {PRONOUNS_OPTIONS.map((p) => (
-                  <option key={p} value={p}>
-                    {p === "custom" ? "Custom…" : p}
-                  </option>
+                  <option key={p} value={p}>{p === "custom" ? "Custom…" : p}</option>
                 ))}
               </select>
-              {showCustomPronouns && (
+              {pronouns === "custom" && (
                 <input
                   type="text"
                   value={customPronouns}
                   onChange={(e) => setCustomPronouns(e.target.value)}
                   placeholder="Enter your pronouns"
-                  className="w-full rounded-xl border border-[--color-border] bg-[--color-surface] px-4 py-3 text-sm outline-none focus:border-[--color-brand-600] focus:ring-2 focus:ring-[--color-brand-600]/20 transition"
+                  className="w-full rounded-2xl px-4 py-3 text-sm outline-none transition mt-2"
+                  style={fieldStyle}
                 />
               )}
             </FormField>
 
-            {/* Current Vibe */}
-            <FormField
-              label="Current Vibe"
-              hint="Visible to your Pod · expires after 24 hours"
-            >
+            {/* Vibe */}
+            <FormField label="Current Vibe" hint="Visible to your Pod · expires after 24 hours">
               <button
                 onClick={() => setVibeOpen(true)}
-                className="w-full flex items-center gap-3 rounded-xl border border-[--color-border] bg-[--color-surface] px-4 py-3 text-sm text-left hover:border-[--color-brand-600] transition group"
+                className="w-full flex items-center gap-3 rounded-2xl px-4 py-3 text-sm text-left transition active:scale-[0.99]"
+                style={fieldStyle}
               >
                 {vibe ? (
                   <>
                     <span className="text-2xl leading-none">{vibe.emoji}</span>
-                    <div className="flex-1 min-w-0">
-                      <p className="font-medium text-[--color-foreground]">{vibe.label || "No label"}</p>
-                    </div>
+                    <p className="font-medium flex-1" style={{ color: "var(--color-foreground)" }}>{vibe.label}</p>
                   </>
                 ) : (
                   <>
-                    <Smile size={20} className="text-[--color-muted] shrink-0" />
-                    <span className="text-[--color-muted] flex-1">How are you feeling right now?</span>
+                    <Smile size={20} style={{ color: "var(--color-muted)" }} className="shrink-0" />
+                    <span className="flex-1" style={{ color: "var(--color-muted)" }}>How are you feeling right now?</span>
                   </>
                 )}
-                <ChevronRight size={16} className="text-[--color-muted] shrink-0 group-hover:text-[--color-brand-600] transition" />
+                <ChevronRight size={15} style={{ color: "rgba(167,153,237,0.60)" }} className="shrink-0" />
               </button>
             </FormField>
 
-            {/* Hometown / Roots */}
-            <FormField
-              label="Hometown / Roots"
-              hint="Helps build connections within the community"
-            >
+            {/* Hometown */}
+            <FormField label="Hometown / Roots" hint="Helps build connections within the community">
               <div className="relative">
-                <MapPin
-                  size={15}
-                  className="absolute left-3.5 top-1/2 -translate-y-1/2 text-[--color-muted] pointer-events-none"
-                />
+                <MapPin size={15} className="absolute left-3.5 top-1/2 -translate-y-1/2 pointer-events-none" style={{ color: "var(--color-muted)" }} />
                 <input
                   type="text"
                   value={hometown}
                   onChange={(e) => setHometown(e.target.value)}
                   placeholder="City, country, or region"
-                  className="w-full rounded-xl border border-[--color-border] bg-[--color-surface] pl-9 pr-4 py-3 text-sm outline-none focus:border-[--color-brand-600] focus:ring-2 focus:ring-[--color-brand-600]/20 transition"
+                  className="w-full rounded-2xl pl-9 pr-4 py-3 text-sm outline-none transition"
+                  style={fieldStyle}
                 />
               </div>
             </FormField>
 
-            {/* Save button */}
-            <button
-              onClick={handleSave}
-              className={[
-                "w-full rounded-2xl py-3.5 text-sm font-semibold flex items-center justify-center gap-2 transition active:scale-[0.98]",
-                saved
-                  ? "bg-[--color-accent-200] text-[--color-accent-500]"
-                  : "bg-[--color-brand-600] text-white hover:opacity-90",
-              ].join(" ")}
-            >
-              {saved ? (
-                <>
-                  <Check size={16} />
-                  Saved!
-                </>
-              ) : (
-                "Save Changes"
-              )}
-            </button>
-
           </div>
+
+          {/* Save button */}
+          <button
+            onClick={handleSave}
+            className="w-full mt-4 rounded-2xl py-3.5 text-sm font-bold flex items-center justify-center gap-2 transition active:scale-[0.98]"
+            style={
+              saved
+                ? { background: "#c9ddc5", color: "#3a5e36" }
+                : { background: "linear-gradient(160deg, #c4b8f5 0%, #8370d4 100%)", color: "#fff", boxShadow: "0 2px 14px rgba(131,112,212,0.32)" }
+            }
+          >
+            {saved ? <><Check size={16} /> Saved!</> : "Save Changes"}
+          </button>
         </div>
+
       </div>
 
-      {/* ── Vibe Picker ────────────────────────────────── */}
       {vibeOpen && (
         <VibePicker
           current={vibe}
