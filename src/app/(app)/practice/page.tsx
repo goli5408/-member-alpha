@@ -193,7 +193,7 @@ export default function PracticePage() {
   const currentEntries = entries.filter((e) => e.type === activeTab);
 
   return (
-    <div className="pb-6">
+    <div className="pb-6 md:max-w-2xl md:mx-auto md:px-8">
 
       {/* ── Hero header ────────────────────────────────── */}
       <header

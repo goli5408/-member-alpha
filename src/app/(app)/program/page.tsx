@@ -15,7 +15,7 @@ export default function ProgramPage() {
   const doneCount   = PROGRAM_WEEKS.filter((w) => w.status === "done").length;
 
   return (
-    <div className="pb-10">
+    <div className="pb-10 md:max-w-2xl md:mx-auto md:px-8">
       {/* ── Hero ───────────────────────────────────────────── */}
       <header
         className="px-5 pt-6 pb-8"

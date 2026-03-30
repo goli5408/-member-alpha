@@ -118,7 +118,7 @@ export default function GuidePage() {
 
   return (
     <div
-      className="flex flex-col overflow-hidden"
+      className="flex flex-col overflow-hidden md:max-w-2xl md:mx-auto"
       style={{ height: "calc(100dvh - var(--top-bar-height) - var(--bottom-nav-height))" }}
     >
 

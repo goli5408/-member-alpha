@@ -2,7 +2,7 @@ export default function ProgressPage() {
   const mockPercent = 42;
 
   return (
-    <div className="px-4 pt-6 space-y-6">
+    <div className="px-4 pt-6 space-y-6 md:max-w-2xl md:mx-auto md:px-8">
       <header>
         <h1 className="text-xl font-semibold text-[--color-foreground]">My Progress</h1>
         <p className="text-sm text-[--color-muted]">Week 1 of 8</p>

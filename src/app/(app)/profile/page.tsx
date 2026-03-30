@@ -215,7 +215,7 @@ export default function ProfilePage() {
 
   return (
     <>
-      <div className="pb-10">
+      <div className="pb-10 md:max-w-2xl md:mx-auto md:px-8">
 
         {/* ── Hero / cover ──────────────────────────────────── */}
         <div

@@ -47,7 +47,7 @@ export default function SettingsPage() {
   const [_dummy, setDummy] = useState(false); // keep client for future interactivity
 
   return (
-    <div className="pb-10">
+    <div className="pb-10 md:max-w-2xl md:mx-auto md:px-8">
 
       {/* ── Hero header ──────────────────────────────────────── */}
       <header

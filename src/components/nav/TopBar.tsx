@@ -73,7 +73,7 @@ export default function TopBar() {
     <>
       {/* ── Fixed top bar ─────────────────────────────────── */}
       <div
-        className="fixed top-0 left-1/2 -translate-x-1/2 w-full z-30 flex items-center justify-between px-4"
+        className="md:hidden fixed top-0 left-1/2 -translate-x-1/2 w-full z-30 flex items-center justify-between px-4"
         style={{
           maxWidth: "var(--max-mobile-width)",
           height: "var(--top-bar-height)",

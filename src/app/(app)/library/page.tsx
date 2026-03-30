@@ -188,7 +188,7 @@ export default function LibraryPage() {
   const unreadCount = CONTENT_ITEMS.filter((i) => !i.isRead).length;
 
   return (
-    <div className="pb-4">
+    <div className="pb-4 md:max-w-4xl md:mx-auto md:px-8">
 
       {/* ── Hero header ────────────────────────────────────── */}
       <header
@@ -323,7 +323,7 @@ export default function LibraryPage() {
             <h2 className="text-xs font-semibold uppercase tracking-widest text-[--color-muted] mb-3">
               Week {week}
             </h2>
-            <div className="space-y-3">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               {items.map((item) => (
                 <ContentCard key={item.id} item={item} />
               ))}

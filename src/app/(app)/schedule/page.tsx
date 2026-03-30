@@ -77,7 +77,7 @@ export default function SchedulePage() {
   const dayOffsets = Array.from({ length: 7 }, (_, i) => i - TODAY_IDX);
 
   return (
-    <div className="pb-8">
+    <div className="pb-8 md:max-w-2xl md:mx-auto md:px-8">
 
       {/* ── Hero header ──────────────────────────────────────── */}
       <header

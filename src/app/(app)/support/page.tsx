@@ -27,7 +27,7 @@ export default function SupportPage() {
   }
 
   return (
-    <div className="pb-10 max-w-[430px] mx-auto">
+    <div className="pb-10 md:max-w-2xl md:mx-auto md:px-8">
 
       {/* ── Hero header ──────────────────────────────────────── */}
       <header

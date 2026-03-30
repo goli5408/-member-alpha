@@ -339,7 +339,7 @@ export default function PodPage() {
             <p className="text-xs font-semibold uppercase tracking-widest text-[--color-muted] mb-3">
               Pod Members
             </p>
-            <div className="grid grid-cols-3 gap-3">
+            <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
               {podMembers.map((member) => (
                 <div
                   key={member.id}
@@ -372,7 +372,7 @@ export default function PodPage() {
 
       {/* ══ CHAT TAB ═════════════════════════════════════════ */}
       {tab === "chat" && (
-        <div className="flex-1 flex flex-col overflow-hidden bg-[--color-background]">
+        <div className="flex-1 flex flex-col overflow-hidden bg-[--color-background] md:max-w-2xl md:mx-auto md:w-full">
 
           {/* Messages ─────────────────────────────────────── */}
           <div className="flex-1 overflow-y-auto px-3 py-4">
