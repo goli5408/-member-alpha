@@ -48,7 +48,7 @@ export default function HomePage() {
   const progressPct = Math.round(((CURRENT_WEEK - 1) / 8) * 100);
 
   return (
-    <div className="pb-8 md:max-w-4xl md:mx-auto md:px-8">
+    <div className="pb-8">
 
       {/* ── Hero ─────────────────────────────────────────────
           Brand spec p.25: "purple should remain dominant"
@@ -105,10 +105,7 @@ export default function HomePage() {
         </div>
       </header>
 
-      <div className="px-4 mt-6 md:grid md:grid-cols-2 md:gap-6">
-
-        {/* ── Left column: Today's Practice + Next Up ─── */}
-        <div className="space-y-6">
+      <div className="px-4 space-y-6 mt-6">
 
         {/* ── Today's Practice ─────────────────────────────────
             Collage card (p.33): layered blobs, large radius,
@@ -212,11 +209,6 @@ export default function HomePage() {
           </Link>
         </section>
 
-        </div>{/* end left column */}
-
-        {/* ── Right column: Your Journey + Check-in nudge ── */}
-        <div className="space-y-6 mt-6 md:mt-0">
-
         {/* ── Your Journey ────────────────────────────────── */}
         <section>
           <h2 className="text-xs font-semibold uppercase tracking-widest text-[--color-muted] mb-3">
@@ -313,8 +305,6 @@ export default function HomePage() {
           </div>
           <Sparkles size={16} style={{ color: "#a799ed" }} className="shrink-0" />
         </Link>
-
-        </div>{/* end right column */}
 
       </div>
     </div>

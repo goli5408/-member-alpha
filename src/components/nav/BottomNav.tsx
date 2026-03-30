@@ -24,7 +24,7 @@ export default function BottomNav() {
   return (
     <nav
       aria-label="Main navigation"
-      className="md:hidden fixed bottom-0 left-1/2 -translate-x-1/2 w-full max-w-[430px] z-50"
+      className="fixed bottom-0 left-1/2 -translate-x-1/2 w-full max-w-[430px] z-50"
       style={{
         height: "var(--bottom-nav-height)",
         /* Warm beige frosted glass — no hard border, soft purple aura */

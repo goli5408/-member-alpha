@@ -34,7 +34,23 @@ export default function RootLayout({
       lang="en"
       className={`${outfit.variable} ${fraunces.variable} h-full antialiased`}
     >
-      <body className="min-h-full bg-[#f3f1e9]">{children}</body>
+      {/* Desktop: warm neutral bg with centred phone frame
+          Mobile: full-bleed (the inner div just becomes 100 vw) */}
+      <body
+        className="min-h-full flex justify-center"
+        style={{ background: "#ddd9cc" }}
+      >
+        <div
+          className="relative w-full flex flex-col"
+          style={{
+            maxWidth: 430,
+            minHeight: "100dvh",
+            boxShadow: "0 0 0 1px rgba(0,0,0,0.06), 0 8px 48px rgba(0,0,0,0.18)",
+          }}
+        >
+          {children}
+        </div>
+      </body>
     </html>
   );
 }
