@@ -61,11 +61,11 @@ export const CONTENT_ITEMS: ContentItem[] = [
     weekNumber: 1,
     durationSec: 3120,
     description: "Full recording of the Week 1 live session — orientation, community agreements, and introductions.",
-    author: "Journey Team",
+    author: "Care Team",
     isRead: false,
     isBookmarked: false,
     tags: ["session", "recording", "orientation"],
-    body: "This recording covers the full Week 1 live session. You'll meet the Journey Team, hear the community agreements, and watch member introductions.",
+    body: "This recording covers the full Week 1 live session. You'll meet the Care Team, hear the community agreements, and watch member introductions.",
   },
 
   // ── Week 2 ──────────────────────────────────────────────────
@@ -141,7 +141,7 @@ export const CONTENT_ITEMS: ContentItem[] = [
     weekNumber: 3,
     durationSec: 5400,
     description: "Full recording of the Week 3 live session on community, belonging, and collective healing.",
-    author: "Journey Team",
+    author: "Care Team",
     isRead: false,
     isBookmarked: false,
     tags: ["session", "recording", "community"],

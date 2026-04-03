@@ -14,6 +14,7 @@ import {
   ChevronRight,
   LogOut,
 } from "lucide-react";
+import PageHeader from "@/components/ui/PageHeader";
 
 // ── Data ──────────────────────────────────────────────────────────
 const SECTIONS = [
@@ -47,35 +48,16 @@ export default function SettingsPage() {
   const [_dummy, setDummy] = useState(false); // keep client for future interactivity
 
   return (
-    <div className="pb-10 md:max-w-2xl md:mx-auto md:px-8">
+    <div className="pb-10">
 
-      {/* ── Hero header ──────────────────────────────────────── */}
-      <header
-        className="relative overflow-hidden px-5 pt-6 pb-8"
-        style={{ background: "linear-gradient(160deg, #f3f1e9 0%, #fef8e0 60%, #fdf0b0 100%)" }}
-      >
-        <div
-          aria-hidden
-          className="pointer-events-none absolute -top-8 -right-8 w-40 h-40 rounded-full"
-          style={{ background: "radial-gradient(circle, rgba(253,226,116,0.35) 0%, transparent 70%)" }}
-        />
-        <div
-          aria-hidden
-          className="pointer-events-none absolute bottom-0 left-1/3 w-24 h-24 rounded-full"
-          style={{ background: "radial-gradient(circle, rgba(253,200,80,0.18) 0%, transparent 70%)" }}
-        />
-        <div className="relative">
-          <p className="text-[11px] font-semibold uppercase tracking-widest mb-1" style={{ color: "#8a6a00" }}>
-            Soul Seated
-          </p>
-          <h1 className="font-display text-2xl font-bold leading-tight" style={{ color: "#414651" }}>
-            Preferences
-          </h1>
-          <p className="text-sm mt-1" style={{ color: "rgba(65,70,81,0.70)" }}>
-            Notifications &amp; availability
-          </p>
-        </div>
-      </header>
+      <PageHeader
+        title="Preferences"
+        subtitle="Notifications & availability"
+        accentColor="#8a6a00"
+        gradient="linear-gradient(160deg, #f3f1e9 0%, #fef8e0 60%, #fdf0b0 100%)"
+        blob1="radial-gradient(circle, rgba(253,226,116,0.35) 0%, transparent 70%)"
+        blob2="radial-gradient(circle, rgba(253,200,80,0.18) 0%, transparent 70%)"
+      />
 
       {/* ── Sections ─────────────────────────────────────────── */}
       <div className="px-4 mt-5 space-y-6">

@@ -106,7 +106,7 @@ export default function ContentItemPage({
   const heroBg  = TYPE_HERO_BG[item.type];
 
   return (
-    <div className="pb-8 md:max-w-2xl md:mx-auto md:px-8">
+    <div className="pb-8">
 
       {/* ── Top bar ────────────────────────────────────────── */}
       <div className="flex items-center justify-between px-4 pt-6 pb-2 sticky top-0 bg-[--color-background]/95 backdrop-blur-sm z-10 border-b border-[--color-border]">

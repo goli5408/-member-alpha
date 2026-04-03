@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { Send, CheckCircle2, LifeBuoy, MessageCircle } from "lucide-react";
+import PageHeader from "@/components/ui/PageHeader";
 
 const CATEGORIES = [
   { value: "logistics",        label: "Logistics" },
@@ -27,43 +28,18 @@ export default function SupportPage() {
   }
 
   return (
-    <div className="pb-10 md:max-w-2xl md:mx-auto md:px-8">
+    <div className="pb-10">
 
-      {/* ── Hero header ──────────────────────────────────────── */}
-      <header
-        className="relative overflow-hidden px-5 pt-6 pb-8"
-        style={{ background: "var(--gradient-guide)" }}
-      >
-        <div
-          aria-hidden
-          className="pointer-events-none absolute -top-8 -right-8 w-40 h-40 rounded-full"
-          style={{ background: "radial-gradient(circle, rgba(255,156,96,0.25) 0%, transparent 70%)" }}
-        />
-        <div
-          aria-hidden
-          className="pointer-events-none absolute bottom-0 left-1/3 w-24 h-24 rounded-full"
-          style={{ background: "radial-gradient(circle, rgba(253,226,116,0.18) 0%, transparent 70%)" }}
-        />
-        <div className="relative flex items-center gap-4">
-          <div
-            className="w-12 h-12 rounded-2xl flex items-center justify-center shrink-0"
-            style={{ background: "rgba(255,255,255,0.55)", backdropFilter: "blur(8px)", border: "1px solid rgba(255,156,96,0.25)" }}
-          >
-            <LifeBuoy size={22} style={{ color: "#c06020" }} />
-          </div>
-          <div>
-            <p className="text-[11px] font-semibold uppercase tracking-widest mb-0.5" style={{ color: "#c06020" }}>
-              Soul Seated
-            </p>
-            <h1 className="font-display text-2xl font-bold leading-tight" style={{ color: "#414651" }}>
-              Support
-            </h1>
-            <p className="text-sm mt-0.5" style={{ color: "rgba(65,70,81,0.70)" }}>
-              We&apos;re here to help
-            </p>
-          </div>
-        </div>
-      </header>
+      <PageHeader
+        title="Support"
+        subtitle="We're here to help"
+        accentColor="#c06020"
+        gradient="var(--gradient-guide)"
+        blob1="radial-gradient(circle, rgba(255,156,96,0.25) 0%, transparent 70%)"
+        blob2="radial-gradient(circle, rgba(253,226,116,0.18) 0%, transparent 70%)"
+        icon={<LifeBuoy size={22} style={{ color: "#c06020" }} />}
+        iconBorder="rgba(255,156,96,0.25)"
+      />
 
       <div className="px-4 mt-5 space-y-5">
 

@@ -9,9 +9,8 @@ import {
   Sparkles,
 } from "lucide-react";
 import Greeting from "@/components/ui/Greeting";
+import { createServerClient } from "@/lib/supabase/server";
 
-// ── Mock data ────────────────────────────────────────────────────
-const MEMBER_NAME = "Jordan";
 const CURRENT_WEEK = 3;
 
 const PROGRAM_WEEKS = [
@@ -43,7 +42,20 @@ const UPCOMING_EVENT = {
 };
 // ────────────────────────────────────────────────────────────────
 
-export default function HomePage() {
+export default async function HomePage() {
+  const supabase = await createServerClient();
+  const { data: { user } } = await supabase.auth.getUser();
+
+  let memberName = "Member";
+  if (user) {
+    const { data: profile } = await supabase
+      .from("profiles")
+      .select("display_name")
+      .eq("id", user.id)
+      .single();
+    memberName = profile?.display_name ?? memberName;
+  }
+
   const currentWeekData = PROGRAM_WEEKS[CURRENT_WEEK - 1];
   const progressPct = Math.round(((CURRENT_WEEK - 1) / 8) * 100);
 
@@ -72,7 +84,7 @@ export default function HomePage() {
 
         {/* Greeting + week badge */}
         <div className="relative flex items-start justify-between gap-3">
-          <Greeting name={MEMBER_NAME} />
+          <Greeting name={memberName} />
           <Link
             href={`/program/${CURRENT_WEEK}`}
             className="shrink-0 flex items-center gap-1 rounded-full px-3 py-1 text-xs font-semibold"

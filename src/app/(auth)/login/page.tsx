@@ -1,6 +1,12 @@
+"use client";
+
 import Link from "next/link";
+import { useActionState } from "react";
+import { login } from "@/app/actions/auth";
 
 export default function LoginPage() {
+  const [state, action, pending] = useActionState(login, null);
+
   return (
     <div className="w-full max-w-sm space-y-8">
       {/* Logo / brand */}
@@ -12,13 +18,20 @@ export default function LoginPage() {
       </div>
 
       {/* Form */}
-      <form className="space-y-4">
+      <form action={action} className="space-y-4">
+        {state?.error && (
+          <p className="rounded-xl bg-red-50 border border-red-200 px-4 py-3 text-sm text-red-700">
+            {state.error}
+          </p>
+        )}
+
         <div className="space-y-1">
           <label htmlFor="email" className="text-sm font-medium text-[--color-foreground]">
             Email
           </label>
           <input
             id="email"
+            name="email"
             type="email"
             autoComplete="email"
             required
@@ -33,6 +46,7 @@ export default function LoginPage() {
           </label>
           <input
             id="password"
+            name="password"
             type="password"
             autoComplete="current-password"
             required
@@ -41,17 +55,12 @@ export default function LoginPage() {
           />
         </div>
 
-        <div className="text-right">
-          <Link href="/forgot-password" className="text-xs text-[--color-brand] hover:underline">
-            Forgot password?
-          </Link>
-        </div>
-
         <button
           type="submit"
-          className="w-full rounded-xl bg-[--color-brand] py-3 text-sm font-semibold text-white hover:opacity-90 active:scale-[0.98] transition"
+          disabled={pending}
+          className="w-full rounded-xl bg-[--color-brand] py-3 text-sm font-semibold text-white hover:opacity-90 active:scale-[0.98] transition disabled:opacity-60"
         >
-          Sign in
+          {pending ? "Signing in…" : "Sign in"}
         </button>
       </form>
 

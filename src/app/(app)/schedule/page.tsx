@@ -1,4 +1,5 @@
 import { CalendarDays, Video, Users, Clock } from "lucide-react";
+import PageHeader from "@/components/ui/PageHeader";
 
 // ── Mock data ─────────────────────────────────────────────────────
 const DAYS = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
@@ -77,30 +78,15 @@ export default function SchedulePage() {
   const dayOffsets = Array.from({ length: 7 }, (_, i) => i - TODAY_IDX);
 
   return (
-    <div className="pb-8 md:max-w-2xl md:mx-auto md:px-8">
+    <div className="pb-8">
 
-      {/* ── Hero header ──────────────────────────────────────── */}
-      <header
-        className="relative overflow-hidden px-5 pt-6 pb-8"
-        style={{ background: "linear-gradient(160deg, #f3f1e9 0%, #eaedff 60%, #d5dbfc 100%)" }}
-      >
-        <div
-          aria-hidden
-          className="pointer-events-none absolute -top-8 -right-8 w-40 h-40 rounded-full"
-          style={{ background: "radial-gradient(circle, rgba(128,152,249,0.25) 0%, transparent 70%)" }}
-        />
-        <div className="relative">
-          <p className="text-[11px] font-semibold uppercase tracking-widest mb-1" style={{ color: "#5060c8" }}>
-            Soul Seated
-          </p>
-          <h1 className="font-display text-2xl font-bold leading-tight" style={{ color: "#414651" }}>
-            Schedule
-          </h1>
-          <p className="text-sm mt-1" style={{ color: "rgba(65,70,81,0.70)" }}>
-            All your upcoming events
-          </p>
-        </div>
-      </header>
+      <PageHeader
+        title="Schedule"
+        subtitle="All your upcoming events"
+        accentColor="#5060c8"
+        gradient="linear-gradient(160deg, #f3f1e9 0%, #eaedff 60%, #d5dbfc 100%)"
+        blob1="radial-gradient(circle, rgba(128,152,249,0.25) 0%, transparent 70%)"
+      />
 
       {/* ── Week strip ───────────────────────────────────────── */}
       <div className="px-4 mt-4 mb-5">

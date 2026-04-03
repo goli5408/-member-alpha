@@ -69,7 +69,7 @@ export default function WeekProgramPage({ params }: { params: Promise<{ week: st
     : "linear-gradient(145deg, #ede9f2 0%, #ddd0eb 100%)";
 
   return (
-    <div className="pb-10 md:max-w-2xl md:mx-auto md:px-8">
+    <div className="pb-10">
       {/* ── Header ─────────────────────────────────────────── */}
       <header className="relative px-5 pt-6 pb-8" style={{ background: headerGradient }}>
         {/* Back */}

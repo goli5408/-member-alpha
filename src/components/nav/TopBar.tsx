@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import {
   Menu,
   X,
@@ -13,6 +13,7 @@ import {
   ChevronRight,
   LogOut,
 } from "lucide-react";
+import { logout } from "@/app/actions/auth";
 
 const MENU_ITEMS = [
   {
@@ -20,7 +21,6 @@ const MENU_ITEMS = [
     label: "Schedule",
     Icon: CalendarDays,
     description: "Upcoming sessions & events",
-    /* blue — contemplative / time */
     iconBg: "rgba(128,152,249,0.18)",
     iconColor: "#5060c8",
     activeBg: "rgba(128,152,249,0.12)",
@@ -31,7 +31,6 @@ const MENU_ITEMS = [
     label: "Profile",
     Icon: UserRound,
     description: "Edit your name, bio & vibe",
-    /* purple — identity */
     iconBg: "rgba(167,153,237,0.18)",
     iconColor: "#8370d4",
     activeBg: "rgba(167,153,237,0.10)",
@@ -42,7 +41,6 @@ const MENU_ITEMS = [
     label: "Preferences",
     Icon: SlidersHorizontal,
     description: "Notifications & availability",
-    /* yellow — warmth */
     iconBg: "rgba(253,226,116,0.28)",
     iconColor: "#8a6a00",
     activeBg: "rgba(253,226,116,0.15)",
@@ -53,7 +51,6 @@ const MENU_ITEMS = [
     label: "Support",
     Icon: LifeBuoy,
     description: "Get help from the team",
-    /* orange — energising */
     iconBg: "rgba(255,156,96,0.18)",
     iconColor: "#c06020",
     activeBg: "rgba(255,156,96,0.10)",
@@ -61,21 +58,26 @@ const MENU_ITEMS = [
   },
 ] as const;
 
-const MEMBER = { name: "Jordan", pronouns: "they/them", vibe: "🌱" };
+interface MemberProps {
+  name: string;
+  pronouns: string;
+  vibe: string;
+}
 
-export default function TopBar() {
+export default function TopBar({ member }: { member: MemberProps }) {
   const [open, setOpen] = useState(false);
   const pathname        = usePathname();
+  const router          = useRouter();
 
   function close() { setOpen(false); }
+  function navigate(href: string) { close(); router.push(href); }
 
   return (
     <>
       {/* ── Fixed top bar ─────────────────────────────────── */}
       <div
-        className="fixed top-0 left-1/2 -translate-x-1/2 w-full z-30 flex items-center justify-between px-4"
+        className="sticky top-0 w-full z-30 flex items-center justify-between px-4"
         style={{
-          maxWidth: "var(--max-mobile-width)",
           height: "var(--top-bar-height)",
           background: "rgba(243,241,233,0.88)",
           backdropFilter: "blur(20px)",
@@ -105,7 +107,7 @@ export default function TopBar() {
         />
       )}
 
-      {/* ── Drawer (constrained to app shell) ─────────────── */}
+      {/* ── Drawer ────────────────────────────────────────── */}
       <div
         className="fixed top-0 z-50 h-full pointer-events-none"
         style={{
@@ -122,23 +124,20 @@ export default function TopBar() {
             open ? "translate-x-0" : "translate-x-full",
           ].join(" ")}
           style={{
-            /* Warm beige + noise — same as app shell */
             backgroundColor: "var(--color-background)",
             backgroundImage: "var(--noise-svg)",
             backgroundSize: "200px 200px",
             backgroundBlendMode: "multiply",
-            /* Purple aura on left edge */
             boxShadow:
               "-2px 0 0 rgba(167,153,237,0.20), -16px 0 48px rgba(131,112,212,0.14), -4px 0 16px rgba(131,112,212,0.08)",
             borderRadius: "22px 0 0 22px",
           }}
         >
-          {/* ── Gradient header area ─────────────────────── */}
+          {/* ── Gradient header ───────────────────────────── */}
           <div
             className="relative overflow-hidden shrink-0 px-5 pt-12 pb-6"
             style={{ background: "var(--gradient-hero)" }}
           >
-            {/* Decorative blob */}
             <div
               aria-hidden
               className="pointer-events-none absolute -top-6 -right-6 w-36 h-36 rounded-full"
@@ -151,7 +150,6 @@ export default function TopBar() {
             />
 
             <div className="relative flex items-center justify-between">
-              {/* Member summary */}
               <div className="flex items-center gap-3">
                 <div
                   className="w-11 h-11 rounded-2xl flex items-center justify-center text-2xl shrink-0"
@@ -161,19 +159,18 @@ export default function TopBar() {
                     border: "1px solid rgba(167,153,237,0.25)",
                   }}
                 >
-                  {MEMBER.vibe}
+                  {member.vibe}
                 </div>
                 <div>
                   <p className="text-sm font-bold" style={{ color: "#414651" }}>
-                    {MEMBER.name}
+                    {member.name}
                   </p>
                   <p className="text-xs mt-0.5" style={{ color: "rgba(65,70,81,0.60)" }}>
-                    {MEMBER.pronouns}
+                    {member.pronouns}
                   </p>
                 </div>
               </div>
 
-              {/* Close button — frosted glass */}
               <button
                 onClick={close}
                 aria-label="Close menu"
@@ -190,22 +187,21 @@ export default function TopBar() {
             </div>
           </div>
 
-          {/* Subtle purple rule below header */}
           <div
             className="h-px shrink-0"
             style={{ background: "linear-gradient(90deg, transparent 0%, rgba(167,153,237,0.40) 40%, rgba(167,153,237,0.55) 60%, transparent 100%)" }}
           />
 
-          {/* ── Menu items ───────────────────────────────── */}
+          {/* ── Menu items ────────────────────────────────── */}
           <nav className="flex-1 overflow-y-auto px-4 py-4 space-y-2">
             {MENU_ITEMS.map(({ href, label, Icon, description, iconBg, iconColor, activeBg, activeBorder }) => {
               const active = pathname === href || pathname.startsWith(href + "/");
               return (
-                <Link
+                <button
                   key={href}
-                  href={href}
-                  onClick={close}
-                  className="flex items-center gap-4 rounded-2xl px-4 py-3.5 transition active:scale-[0.98]"
+                  type="button"
+                  onClick={() => navigate(href)}
+                  className="w-full flex items-center gap-4 rounded-2xl px-4 py-3.5 transition active:scale-[0.98] text-left"
                   style={
                     active
                       ? { background: activeBg, border: `1px solid ${activeBorder}`, borderLeftWidth: "3px" }
@@ -227,27 +223,30 @@ export default function TopBar() {
                     </p>
                   </div>
                   <ChevronRight size={14} style={{ color: "rgba(167,153,237,0.50)" }} className="shrink-0" />
-                </Link>
+                </button>
               );
             })}
           </nav>
 
-          {/* ── Sign out ─────────────────────────────────── */}
+          {/* ── Sign out ──────────────────────────────────── */}
           <div
             className="shrink-0 px-5 py-5"
             style={{ borderTop: "1px solid rgba(167,153,237,0.15)" }}
           >
-            <button
-              className="flex items-center gap-3 w-full rounded-2xl px-4 py-3 text-sm font-medium transition active:scale-95"
-              style={{
-                background: "rgba(200,53,56,0.06)",
-                border: "1px solid rgba(200,53,56,0.15)",
-                color: "var(--color-error)",
-              }}
-            >
-              <LogOut size={16} />
-              Sign out
-            </button>
+            <form action={logout}>
+              <button
+                type="submit"
+                className="flex items-center gap-3 w-full rounded-2xl px-4 py-3 text-sm font-medium transition active:scale-95"
+                style={{
+                  background: "rgba(200,53,56,0.06)",
+                  border: "1px solid rgba(200,53,56,0.15)",
+                  color: "var(--color-error)",
+                }}
+              >
+                <LogOut size={16} />
+                Sign out
+              </button>
+            </form>
           </div>
         </div>
       </div>
