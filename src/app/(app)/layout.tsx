@@ -16,7 +16,7 @@ export default async function AppLayout({
       .from("profiles")
       .select("display_name, pronouns, vibe_emoji")
       .eq("id", user.id)
-      .single();
+      .maybeSingle();
     if (profile) {
       member = {
         name:     profile.display_name ?? "Member",

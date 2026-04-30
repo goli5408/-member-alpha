@@ -35,16 +35,17 @@ export async function proxy(request: NextRequest) {
   // ── Route classification ────────────────────────────────────────
   const isAuthRoute  = pathname.startsWith("/login") || pathname.startsWith("/signup");
   const isStaffRoute = pathname.startsWith("/staff");
+  const isPaRoute    = pathname.startsWith("/pa");
   const isConfirm    = pathname.startsWith("/auth/confirm");
   const isInternal   =
     pathname.startsWith("/_next") ||
     pathname.startsWith("/favicon") ||
     isConfirm;
-  const isMemberRoute = !isAuthRoute && !isStaffRoute && !isInternal && pathname !== "/";
+  const isMemberRoute = !isAuthRoute && !isStaffRoute && !isPaRoute && !isInternal && pathname !== "/";
 
   // ── Not logged in ───────────────────────────────────────────────
   if (!user) {
-    if (isMemberRoute || isStaffRoute) {
+    if (isMemberRoute || isStaffRoute || isPaRoute) {
       return NextResponse.redirect(new URL("/login", request.url));
     }
     return supabaseResponse;
@@ -52,7 +53,7 @@ export async function proxy(request: NextRequest) {
 
   // ── Logged in: resolve which portal this user belongs to ────────
   // Runs only on routes that need role awareness to avoid excess DB calls.
-  if (isAuthRoute || isStaffRoute || isMemberRoute) {
+  if (isAuthRoute || isStaffRoute || isPaRoute || isMemberRoute) {
     const { data: memberProfile } = await supabase
       .from("profiles")
       .select("id")
@@ -68,14 +69,20 @@ export async function proxy(request: NextRequest) {
       return NextResponse.redirect(new URL(dest, request.url));
     }
 
-    // Staff trying to access the member app
-    if (isStaff && isMemberRoute) {
+    // Staff trying to access the member app or PA portal
+    if (isStaff && (isMemberRoute || isPaRoute)) {
       return NextResponse.redirect(new URL("/staff/dashboard", request.url));
     }
 
     // Member trying to access the staff portal
     if (isMember && isStaffRoute) {
       return NextResponse.redirect(new URL("/home", request.url));
+    }
+
+    // Regular member (non-PA) trying to access the PA portal
+    // PA layout handles the final role check; proxy blocks non-members first
+    if (isMember && isPaRoute) {
+      // Let through — PA layout will redirect if role !== 'peer_ambassador'
     }
   }
 

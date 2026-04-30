@@ -43,3 +43,6 @@ next-env.d.ts
 # spec / design docs — keep local only
 spec.md
 careteam_spec.md
+
+# Claude Code local config
+.claude/launch.json
